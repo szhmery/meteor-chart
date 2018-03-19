@@ -1,0 +1,10 @@
+#!/bin/bash
+#This is the pymongo environment.
+
+sudo apt-get update
+
+sudo apt-get -y install python-pip
+
+sudo pip install pymongo
+
+sudo pip install Flask

@@ -1,0 +1,80 @@
+<template name="dashboard">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-lg-6">
+            <div class="col-lg-6 float-e-margins">
+                <button type="button" class="downloadAllRaw btn btn-primary">Download All Raw Datas</button>
+            </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Cases (attached with show-tech)</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{{case_num}}</h1>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Chassis</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{{chassis_num}}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Releases</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{{release_num}}</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Customers</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <h1 class="no-margins">{{customer_num}}</h1>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>{{cusHisBarTitle}}</h5>
+
+                        <div class="pull-right">
+                            <div class="btn-group">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div>
+                                    <!-- <div class="flot-chart-content" id="flot-dashboard-chart"></div> -->
+                                    <canvas id="flot-dashboard-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

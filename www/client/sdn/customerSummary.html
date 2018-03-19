@@ -1,0 +1,64 @@
+<template name="customerSummary">
+
+    <!-- Page heading -->
+    {{> pageHeading title='Summary' category='Customer' }}
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <div class="col-lg-12">
+                            <h5>Top 10 customers {{loading_string}}</h5>
+                            
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        <div>
+                            <div class="col-sm-3 m-b-xs">
+                                <!--
+                                <select class="input-sm form-control input-s-sm inline" id="my_select">
+                                    <option value="10" {{is_selected 10}}>10</option>
+                                    <option value="25" {{is_selected 25}}>25</option>
+                                    <option value="50" {{is_selected 50}}>50</option>
+                                    <option value="100" {{is_selected 100}}>100</option>
+                                </select>
+-->
+                            </div>
+                            <div class="col-sm-5">
+                                <div data-toggle="buttons" class="btn-group">
+                                <!--
+                                    <label class="btn btn-sm btn-white {{is_cbr_active}}  "> <input type="radio" id="radio_cbr"   name="options" class="options" value="CBR"> cBR </label>
+                                    <label class="btn btn-sm btn-white {{is_ubr_active}}  "> <input type="radio" id="radio_ubr"   name="options" class="options" value="UBR"> uBR </label>
+                                    <label class="btn btn-sm btn-white {{is_total_active}}"> <input type="radio" id="radio_total" name="options" class="options" value="TOTAL"> Total </label>
+                                -->
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <canvas id="barChart" height="140"></canvas>
+                        </div>
+                    </div> <!-- ibox-content -->
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <div class="col-lg-12">
+                            <h5>Customer chassis stats {{loading_string}}</h5>
+                            
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        {{> reactiveTable settings=ComChaSettings}}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</template>
+

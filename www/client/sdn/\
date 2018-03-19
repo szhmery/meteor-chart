@@ -1,0 +1,468 @@
+// var fileSelect = document.getElementById("fileSelect"),
+//     fileElem = document.getElementById("fileElem"),
+//     fileList = document.getElementById("fileList");
+
+//
+// function shrun_analyzer(inputfile) {
+//
+//     // var ret = SR.find({"idsr":"635125821"}).fetch();
+//     var shrun_file = inputfile;
+//     var myRegex = new RegExp("\\nip access-list.*|\\naccess-list.*", "g");
+//     var result = myRegex.test(shrun_file);
+//     console.log(result);
+//     if (result) {
+//         console.log("yes");
+//
+//     } else {
+//         console.log("no");
+//     }
+//
+//     // // console.log(shrun_file);
+//     //
+//     // console.log("zhicren is testing!");
+// }
+
+Template.featureSearch.onRendered(function () {
+    Session.set('loading', true);
+
+
+    onDraw();
+});
+
+function onDraw() {
+
+    if (!(FlowRouter.subsReady("features"))) {
+        Meteor.setTimeout(onDraw, 1);
+        return;
+    }
+    // TODO: select2 could not show normaly.
+    //$(".select2").select2();
+    Session.set('loading', false);
+}
+
+function CurentTime() {
+    var now = new Date();
+
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    var day = now.getDate();
+
+    var hh = now.getHours();
+    var mm = now.getMinutes();
+    var ss = now.getSeconds();
+
+    var clock = year + "-";
+
+    if (month < 10)
+        clock += "0";
+
+    clock += month + "-";
+
+    if (day < 10)
+        clock += "0";
+
+    clock += day + " ";
+
+    if (hh < 10)
+        clock += "0";
+
+    clock += hh + ":";
+
+    if (mm < 10) clock += '0';
+
+    clock += mm + ":";
+
+
+    clock += ss;
+    return (clock);
+}
+
+
+function isInArray(arr,value){
+    var index = $.inArray(value,arr);
+    if(index >= 0){
+        return true;
+    }
+    return false;
+}
+
+
+
+
+Template.importModal.onRendered(function () {
+    $("#select_featurename").select2()
+});
+
+Template.addfeatureModal.onRendered(function () {
+    $("#add_featurename").select2(
+    	{
+		placeholder: 'Select multiple features',
+		allowClear: true,
+	}
+    )
+});
+
+
+
+Template.featureSearch.events({
+
+
+    'click .import'() {
+        // show modal
+
+        Modal.show('importModal');
+
+    },
+
+
+    'click .showfailed'() {
+        //TODO: add show failed modal
+
+
+        Session.set('feature_id', this._id);
+
+        Modal.show('showModal');
+        $("#alert-title").html('These features are not found!');
+
+    },
+
+    'click .delete'() {
+        //TODO: delete this unit-test result
+
+        Session.set('feature_id', this._id);
+        Session.set('option', 'delete');
+        Modal.show('deleteModal');
+        // set modal input text
+        $("#alert-title").html('Delete Case!');
+        $("#message").html('Are you sure to delete case ?');
+        $("#msg-div-type").attr("class", "alert alert-warning");
+        $("#alert-button").html('Yes');
+    },
+
+    'click .addfeature'(){
+        Session.set('update_id', this._id);
+        Session.set('username', this.Username);
+        let ret = Unit_Test.find({"_id": this._id}).fetch();
+        let status = ret[0].status;
+        if (status === "Running"){
+            Modal.show('updatewarnningModal');
+            $("#alert-title").html('Update Warning!');
+            $("#message").html('The status is still running, you can not update!');
+            $("#msg-div-type").attr("class", "alert alert-warning");
+            $("#alert-button").html('Yes');
+        }else {
+            Modal.show('addfeatureModal');
+
+        }
+
+    },
+
+
+
+});
+
+Template.importModal.events({
+
+    'click .Add_file'() {
+
+        // document.getElementById("file").files[0];
+        // var file = this.files.length;
+        var file = document.getElementById("file").files[0];
+
+        filename = file.name;
+        if (file) {
+            var reader = new FileReader();
+            reader.readAsText(file, "UTF-8");
+            reader.onload = function (evt) {
+                var shrun_file = evt.target.result;
+
+                // re_shrun = re.compile(r"--+ show running-config --+")
+                // var myRegex = new RegExp("--+ show running-config --+", "g");
+                // var shrun_config = shrun_file.match(myRegex);
+                // console.log(shrun_config);
+
+                // console.log(shrun_analyzer(shrun_config));
+                // var shrun_content = shrun_analyzer(shrun_config);
+                // TODO: the cmd need to update.
+                let failedList = [];
+                let successList = [];
+                var failedNum = 0;
+                var successNum = 0;
+
+
+                let selectedList= $("#select_featurename").select2().val();
+                let username = $("#Inputname").val();
+
+                status="Running";
+                var Date = CurentTime();
+
+                Unit_Test.insert({"Date":Date, "Username":username, "shtech_name":filename, "shtech_content": shrun_file, "status":"Running", "selected": selectedList, "failed": failedList, "success": successList,
+                "successNum": successNum, "failedNum": failedNum});
+
+
+                let cmd = "curl -d \"date=" + Date + "&status=" + status + "\" -H \"Content-Type: application/x-www-form-urlencoded\" -X POST http://10.79.41.36:8181/check_search";
+
+
+                Meteor.call("check_search", cmd, (error, result) => {
+                    console.log("ERROR: " + error);
+                });
+
+                // Unit_Test.insert({Date: CurentTime(), shtech_name: filename, status: shrun_analyzer(shrun_config)});
+            };
+
+
+        }
+
+    },
+
+    'click .Close_Modal'(){
+        $("#importModal").modal('hide');
+    },
+
+
+});
+
+Template.addfeatureModal.events({
+    'click .Add_file'() {
+
+        //get the update id
+        var caseId = Session.get('update_id');
+
+        // TODO: the cmd need to update.
+
+	let username = $("#Inputname").val();
+        let selectedList= $("#add_featurename").select2().val();
+        // console.log(failedList);
+        // status="Running";
+	if (selectedList === null) {
+		swal({
+		    title: "Warning",
+		    text: "Please select at least one feature!"
+		});
+		return;
+	}
+
+
+        let ret = Unit_Test.find({"_id":caseId}).fetch();
+        let newSelectedList = ret[0].selected;
+        var Date = ret[0].Date;
+
+	var is_same = false;
+	if (newSelectedList.length == selectedList.length) {
+		is_same = true;
+		// Both array will be sorted, so we can compare them simplier.
+		for (let i=0; i<newSelectedList.length; i++) {
+			if (newSelectedList[i] !== selectedList[i]) {
+				is_same = false;
+				break;
+			}
+		}
+	}
+	/*
+	var is_same = (newSelectedList.length == selectedList.length) && newSelectedList.every(function(element, index) {
+		    return element === selectedList[index]; 
+	});
+	*/
+/*
+	if (is_same) {
+		swal({
+		    title: "Warning",
+		    text: "Feature List is not changed!"
+		});
+		return;
+	}
+	*/
+
+        var listLen = selectedList.length;
+        console.log(selectedList);
+        for (var i = 0; i < listLen; i++){
+            console.log(selectedList[i]);
+
+		// Why it will only append!
+            if (!isInArray(newSelectedList, selectedList[i])){
+                newSelectedList.push(selectedList[i]);
+            }
+        }
+
+
+        let rc = Unit_Test.update({"_id": caseId},{$set: {"Username":username, "selected":selectedList,"status":"Running"}});
+
+	// Hide the dialog before calling the running
+        $("#addfeatureModal").modal('hide');
+
+
+
+        let cmd = "curl -d \"date=" + Date + "&status=" + status + "\" -H \"Content-Type: application/x-www-form-urlencoded\" -X POST http://10.79.41.36:8181/check_search";
+
+	// Delay 10 seconds to wait for Meteor to sync the MongoDB from brower to server.
+	setTimeout(function() { 
+			Meteor.call("check_search", cmd, (error, result) => {
+			    console.log("ERROR: " + error);
+			});
+		}, 10000);
+    },
+
+    'click .Close_Modal'(){
+        $("#addfeatureModal").modal('hide');
+    },
+
+
+});
+
+
+
+
+
+Template.deleteModal.events({
+    'click .alert-button' (){
+        var alert_option = Session.get('option');
+        if (alert_option === 'delete') {
+            var deleteId = Session.get('feature_id');
+
+            // delete the item directly
+            // Meteor.call('features.remove', deleteId);
+            Unit_Test.remove(deleteId);
+            console.log("not delete feature now, id: " + deleteId);
+        }
+    },
+});
+
+Template.deleteModal.events({
+    'click .alert-button' (){
+        var alert_option = Session.get('option');
+        if (alert_option === 'delete') {
+            var deleteId = Session.get('feature_id');
+
+            // delete the item directly
+            // Meteor.call('features.remove', deleteId);
+            Unit_Test.remove(deleteId);
+            console.log("not delete feature now, id: " + deleteId);
+        }
+    },
+});
+
+
+
+
+Template.featureSearch.rendered = function () {
+
+    Session.set("loading", true);
+    initFeaSumTable();
+    onDraw();
+};
+
+function initFeaSumTable() {
+    if (!(FlowRouter.subsReady("featureSearch"))) {
+        Meteor.setTimeout(initFeaSumTable, 1);
+        return;
+    }
+
+    Session.set("loading", false);
+//    setTimeout(function(){
+//    }, 3000);
+
+    $('.feaSumTable').DataTable({
+        dom: '<"html5buttons"B>lTfgitp',
+        buttons: [
+            {extend: 'excel', title: 'ExampleFile'},
+            {extend: 'pdf', title: 'ExampleFile'},
+        ]
+
+    });
+    console.log("Load feature successfully!");
+
+}
+Template.importModal.helpers({
+    features: function () {
+        let ret = Features.find({}, { "sort": { "name":1}});
+        return ret;
+    },
+
+});
+
+function getFeatureKey(name) {
+    var ret = Features.find({name:name}).fetch();
+    if (ret.length>0) {
+        return ret[0].key;
+    } else {
+        return "";
+    }
+}
+Template.showModal.helpers({
+
+    successfeatures: function () {
+        var showfailed_id = Session.get('feature_id');
+        console.log(showfailed_id);
+        let ret = Unit_Test.find({_id: showfailed_id}).fetch();
+        var result = [];
+        for (var i in ret[0].success) {
+            var name = ret[0].success[i];
+            var key = getFeatureKey(name);
+            result.push({name:name, key:key})
+        }
+        return result;
+    },
+
+
+    failedfeatures: function () {
+        var showfailed_id = Session.get('feature_id');
+        console.log(showfailed_id);
+        let ret = Unit_Test.find({_id: showfailed_id}).fetch();
+        var result = [];
+        for (var i in ret[0].failed) {
+            var name = ret[0].failed[i];
+            var key = getFeatureKey(name);
+            result.push({name:name, key:key})
+        }
+        return result;
+    },
+
+
+
+
+});
+
+Template.addfeatureModal.helpers({
+    username: function () {
+	    return Session.get('username');
+    }
+    features: function () {
+        var updateId = Session.get('update_id');
+        let ret = Unit_Test.find({"_id": updateId}).fetch();
+	if (ret.length == 0) {
+		return [];
+	}
+	let selectedFeatures = ret[0].selected;
+        ret = Features.find({}, { "sort": { "name":1}}).fetch();
+	for (let i=0; i<ret.length; i++) {
+		let name = ret[i].name;
+		let selected = "";
+		if(selectedFeatures.indexOf(name) != -1) {
+			selected = "selected";
+		}
+		ret[i].isSelected = selected;
+	}
+        return ret;
+    },
+
+});
+
+
+
+Template.featureSearch.helpers({
+    cases: function () {
+        return Unit_Test.find({});
+    },
+    features: function () {
+        let ret = Features.find({}, { "sort": { "name":1}});
+        return ret;
+    },
+
+    getStatusClass: function (status) {
+
+        return !(status === "Running");
+
+
+    },
+
+});

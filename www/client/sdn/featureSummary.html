@@ -1,0 +1,106 @@
+<template name="featureSummary">
+
+    <!-- Page heading -->
+    {{> pageHeading title='Summary' category='Feature' }}
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <div class="col-lg-12">
+                            <h5>Top 10 features {{loading_string}}</h5>
+                            
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        <div>
+                            <div class="col-sm-2 m-b-xs">
+                                <!--
+                                <select class="input-sm form-control input-s-sm inline" id="my_select">
+                                    <option value="10" {{is_selected 10}}>10</option>
+                                    <option value="25" {{is_selected 25}}>25</option>
+                                    <option value="50" {{is_selected 50}}>50</option>
+                                    <option value="100" {{is_selected 100}}>100</option>
+                                </select>
+-->
+                            </div>
+                            <div class="col-sm-3">
+                                <div data-toggle="buttons" class="btn-group">
+                                <!--
+                                    <label class="btn btn-sm btn-white {{is_cbr_active}}  "> <input type="radio" id="radio_cbr"   name="options" class="options" value="CBR"> cBR </label>
+                                    <label class="btn btn-sm btn-white {{is_ubr_active}}  "> <input type="radio" id="radio_ubr"   name="options" class="options" value="UBR"> uBR </label>
+                                    <label class="btn btn-sm btn-white {{is_total_active}}"> <input type="radio" id="radio_total" name="options" class="options" value="TOTAL"> Total </label>
+                                -->
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <canvas id="barChart" height="140"></canvas>
+                        </div>
+                    </div> <!-- ibox-content -->
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-8">
+                            <h5>Feature Summary {{loading_string}}</h5>
+                            
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-striped table-bordered table-hover feaSumTable" >
+                            <thead>
+                            <tr>
+                                {{#if is_debug}}
+                                    <th class="col-lg-2">Feature Name</th>
+                                    <th class="col-lg-2">Keyword</th>
+                                    <th class="col-lg-2">Component</th>
+                                    <th class="col-lg-2">Origin Keyword</th>
+                                {{else}}
+                                    <th class="col-lg-4">Feature Name</th>
+                                    <th class="col-lg-4">Keyword</th>
+                                {{/if}}
+                                <th class="col-lg-4">Chassis Number</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each features}}
+                                <tr class="gradeX">
+                                    {{#if is_debug}}
+                                        <td class="col-lg-2">{{name}}</td>
+                                        <td class="col-lg-2">{{key}} </td>
+                                        <th class="col-lg-2">{{feature_component}}</th>
+                                        <th class="col-lg-2">{{origin_key}}</th>
+                                    {{else}}
+                                        <td class="col-lg-4">{{name}}</td>
+                                        <td class="col-lg-4">{{key}} </td>
+                                    {{/if}}
+                                    <td class="center col-lg-4">
+                                        {{#if is_cbr}} 
+                                            {{cbr_reference}}
+                                        {{/if}}
+                                        {{#if is_ubr}} 
+                                            {{ubr_reference}}
+                                        {{/if}}
+                                        {{#if is_total}} 
+                                            {{total_reference}}
+                                        {{/if}}
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</template>
+

@@ -1,0 +1,16 @@
+{
+  "name": "CIS-UI",
+  "private": true,
+  "scripts": {
+    "start": "METEOR_ALLOW_SUPERUSER=1 MONGO_URL=mongodb://10.124.8.69:27017/cmts_features meteor --port 3000"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.20.0",
+    "child_process": "^1.0.2",
+    "core-js": "^2.5.0",
+    "echarts": "^3.6.2",
+    "meteor-node-stubs": "~0.2.4",
+    "regenerator-runtime": "^0.11.0",
+    "zrender": "^3.5.2"
+  }
+}

@@ -1,0 +1,104 @@
+<template name="confFeature">
+
+    <!-- Page heading -->
+    {{> pageHeading title='Feature Admin Page' category='Admin' }}
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Add/Delete/Update Features</h5>
+                        
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover confFeatureTable" >
+                            <thead>
+                            <tr>
+                                <th class="col-lg-4">Feature Name</th>
+                                <th class="col-lg-4">Keyword</th>
+                                <th class="col-lg-4">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each features}}
+                                <tr class="gradeX">
+                                    <td class="col-lg-4">{{name}}</td>
+                                    <td class="col-lg-4">{{key}} </td>
+                                    <td class="center col-lg-4">
+                                        <button type="button" class="edit btn btn-primary">Edit</button>
+                                        <button type="button" class="delete btn btn-danger" disabled="disabled">Delete</button>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>Feature Name</th>
+                                <th>Keyword</th>
+                                <th>Action</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="updateFeatureModal">
+      <!-- Modal -->
+      <div class="modal fade" id="updateModal" role="dialog">
+        <div class="modal-dialog">
+        
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Add New Feature</h4>
+            </div>
+            <div class="modal-body">
+              <label class="update_label" for="name">name:</label>
+              <input type="text" class="form-control" placeholder="New feature name" id="update-name" disabled>
+              <label class="update_label" for="key">key word:</label>
+              <input type="text" class="form-control" placeholder="New feature key word" id="update-key">
+              <div id="updateMsgType">
+                <p id="updateMsg"></p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id="updateNBtn" type="button" class="update-feature btn btn-success">Save</button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+</template>
+
+<template name="alertModal">
+    <div class="modal fade" id="alertModal" role="dialog">
+      <div class="modal-dialog">
+ 
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" id="alert-title">Add Feature Error!</h4>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" id="msg-div-type">
+               <p id="message"></p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="alert-button btn btn-default" data-dismiss="modal" id="alert-button">Close</button>
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+</template>

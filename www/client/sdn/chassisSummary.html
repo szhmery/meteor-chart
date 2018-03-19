@@ -1,0 +1,58 @@
+<template name="chassisSummary">
+
+    <!-- Page heading -->
+    {{> pageHeading title='The Summary of Chassis' category='Chassis' }}
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <div class="col-lg-12">
+                            <h5>{{chaSumPieTitle}}</h5>
+                            
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        <div class="flot-chart">
+                            <div class="flot-chart-pie-content" id="flot-pie-chart"></div>
+                        </div>
+                    </div> <!-- ibox-content -->
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <div class="col-lg-12">
+                            <h5>{{chaSumTableTitle}}</h5>
+                            
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        <!--
+                        <div>
+                            <div class="col-sm-3 m-b-xs">
+                                <select class="input-sm form-control input-s-sm inline" id="my_select">
+                                    <option value="10" {{is_selected 10}}>10</option>
+                                    <option value="25" {{is_selected 25}}>25</option>
+                                    <option value="50" {{is_selected 50}}>50</option>
+                                    <option value="100" {{is_selected 100}}>100</option>
+                                </select>
+                            </div>
+                        </div>
+                        -->
+
+                        <div>
+                            <canvas id="barChart" height="200"></canvas>
+                        </div>
+                    </div> <!-- ibox-content -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</template>
+
