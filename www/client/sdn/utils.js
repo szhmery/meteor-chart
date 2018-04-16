@@ -1,4 +1,4 @@
-
+Session.set('debug',true);
 Template.registerHelper("is_debug", () => {
     var debug = Session.get('debug');
     if (debug !== undefined && debug === true) {

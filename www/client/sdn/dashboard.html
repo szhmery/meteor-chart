@@ -1,78 +1,235 @@
 <template name="dashboard">
+    <!--<script type="text/javascript" src="ecStat.min.js"></script>-->
+
     <div class="wrapper wrapper-content">
         <div class="row">
-            <div class="col-lg-6">
-            <div class="col-lg-6 float-e-margins">
-                <button type="button" class="downloadAllRaw btn btn-primary">Download All Raw Datas</button>
-            </div>
+            <!--<div class="col-lg-6">-->
+            <!--<div class="col-lg-6 float-e-margins">-->
+                <!--<button type="button" class="downloadAllRaw btn btn-primary">Download All Raw Datas</button>-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="col-lg-12">
+                <div class="col-lg-12 float-e-margins">
+                    <h1><b>Low latency test report</b></h1>
+                </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-6">
-            <div class="col-lg-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Cases (attached with show-tech)</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <h1 class="no-margins">{{case_num}}</h1>
 
-                    </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <table id = "latency-table" class="table table-striped table-bordered table-hover confFeatureTable">
+                        <thead>
+                        <tr align="center">
+                            <th class="col-lg-2">Type</th>
+                            <th class="col-lg-2">Source</th>
+                            <th class="col-lg-2">Destination</th>
+                            <th class="col-lg-1">Rate(Mbps)</th>
+                            <th class="col-lg-1">Total frames</th>
+                            <th class="col-lg-2">Min Latency(us)</th>
+                            <th class="col-lg-2">Avg Latency(us)</th>
+                            <th class="col-lg-2">Max Latency(us)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="gradeX" align="center">
+                            <th class="col-lg-2">Normal</th>
+                            <td class="col-lg-2">90.90.90.88</td>
+                            <td class="col-lg-2">80.80.80.5</td>
+                            <td class="col-lg-1">10</td>
+                            <td class="col-lg-1">{{TotalFrame}}</td>
+                            <td class="col-lg-2">{{MinLatency}}</td>
+                            <td class="col-lg-2">{{AveLatency}}</td>
+                            <td class="col-lg-2">{{MaxLatency}}</td>
+                        </tr>
+                        <tr class="gradeX" align="center">
+                            <th class="col-lg-2">Predictive granting</th>
+                            <td class="col-lg-2">90.90.90.88</td>
+                            <td class="col-lg-2">80.80.80.6</td>
+                            <td class="col-lg-1">2</td>
+                            <td class="col-lg-1">{{PgsTotalFrame}}</td>
+                            <td class="col-lg-2">{{PgsMinLatency}}</td>
+                            <td class="col-lg-2">{{PgsAveLatency}}</td>
+                            <td class="col-lg-2">{{PgsMaxLatency}}</td>
+                        </tr>
+                        <tr class="gradeX" align="center">
+                            <th class="col-lg-2">Waterfall low priority</th>
+                            <td class="col-lg-2">90.90.90.88</td>
+                            <td class="col-lg-2">80.80.80.6</td>
+                            <td class="col-lg-1">10</td>
+                            <td class="col-lg-1">{{LQTotalFrame}}</td>
+                            <td class="col-lg-2">{{LQMinLatency}}</td>
+                            <td class="col-lg-2">{{LQAveLatency}}</td>
+                            <td class="col-lg-2">{{LQMaxLatency}}</td>
+                        </tr>
+                        <tr class="gradeX" align="center">
+                            <th class="col-lg-2">Waterfall high priority</th>
+                            <td class="col-lg-2">90.90.90.88</td>
+                            <td class="col-lg-2">80.80.80.6</td>
+                            <td class="col-lg-1">2</td>
+                            <td class="col-lg-1">{{HQTotalFrame}}</td>
+                            <td class="col-lg-2">{{HQMinLatency}}</td>
+                            <td class="col-lg-2">{{HQAveLatency}}</td>
+                            <td class="col-lg-2">{{HQMaxLatency}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+            <!--<div class="col-lg-6">-->
+            <!--<div class="col-lg-6">-->
+                <!--<div class="table float-e-margins">-->
+                    <!--<div class="ibox-title">-->
+                        <!--<h5>Latency(ns)</h5>-->
+                    <!--</div>-->
+                    <!--<div class="ibox-content">-->
+                        <!--<h1 class="no-margins">{{case_num}}</h1>-->
+
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-lg-6">-->
+                <!--<div class="ibox float-e-margins">-->
+                    <!--<div class="ibox-title">-->
+                        <!--<h5>Chassis</h5>-->
+                    <!--</div>-->
+                    <!--<div class="ibox-content">-->
+                        <!--<h1 class="no-margins">{{chassis_num}}</h1>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-lg-6">-->
+                <!--<div class="ibox float-e-margins">-->
+                    <!--<div class="ibox-title">-->
+                        <!--<h5>Releases</h5>-->
+                    <!--</div>-->
+                    <!--<div class="ibox-content">-->
+                        <!--<h1 class="no-margins">{{release_num}}</h1>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-lg-6">-->
+                <!--<div class="ibox float-e-margins">-->
+                    <!--<div class="ibox-title">-->
+                        <!--<h5>Customers</h5>-->
+                    <!--</div>-->
+                    <!--<div class="ibox-content">-->
+                        <!--<h1 class="no-margins">{{customer_num}}</h1>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-lg-6">-->
+                <!--<div class="ibox float-e-margins">-->
+                    <!--<div class="ibox-title">-->
+                        <!--<h5>{{cusHisBarTitle}}</h5>-->
+
+                        <!--<div class="pull-right">-->
+                            <!--<div class="btn-group">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="ibox-content">-->
+                        <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="col-lg-12">&ndash;&gt;-->
+                                <!--<div claas="flot-chart">-->
+                                    <!--<canvas id="flot-dashboard-chart"></canvas>-->
+                                <!--</div>-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="col-lg-6">
                 <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Chassis</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <h1 class="no-margins">{{chassis_num}}</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Releases</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <h1 class="no-margins">{{release_num}}</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Customers</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <h1 class="no-margins">{{customer_num}}</h1>
-                    </div>
-                </div>
-            </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>{{cusHisBarTitle}}</h5>
+                    <div class="ibox-title float-e-margins" >
+                        <h5>Normal Latency distribution</h5>
 
                         <div class="pull-right">
                             <div class="btn-group">
                             </div>
                         </div>
+
                     </div>
                     <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div>
-                                    <!-- <div class="flot-chart-content" id="flot-dashboard-chart"></div> -->
-                                    <canvas id="flot-dashboard-chart"></canvas>
+
+                        <!--<div class="col-lg-12">-->
+                            <div class="flot-chart">
+                                <!--<div class="flot-chart-content" id="flot-dashboard-chart"></div>-->
+                                <!--<div id="distribution"></div>-->
+                                <!--<div id="distribution-chart" style="width:100%;height:550px;"></div>-->
+                                <!--<canvas id="distribution-chart" height="140"></canvas>-->
+                                <div class="flot-chart">
+                                    <div class="flot-chart-content" id="distribution-chart"></div>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
+                </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title float-e-margins" >
+                        <h5>Predictive granding distribution</h5>
+                        <div class="pull-right">
+                            <div class="btn-group">
+                            </div>
+                        </div>
 
+                    </div>
+                    <div class="ibox-content">
+                        <div class="flot-chart">
+                            <div class="flot-chart">
+                                <div class="flot-chart-content" id="distribution-chart-pgs"></div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title float-e-margins" >
+                        <h5>Waterfall Low priority distribution</h5>
+                        <div class="pull-right">
+                            <div class="btn-group">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="ibox-content">
+                        <div class="flot-chart">
+                            <div class="flot-chart">
+                                <div class="flot-chart-content" id="distribution-chart-lq"></div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title float-e-margins" >
+                        <h5>Waterfall high priority distribution</h5>
+                        <div class="pull-right">
+                            <div class="btn-group">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="ibox-content">
+                        <div class="flot-chart">
+                            <div class="flot-chart">
+                                <div class="flot-chart-content" id="distribution-chart-hq"></div>
+                            </div>
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
         </div>

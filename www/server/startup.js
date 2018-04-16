@@ -619,7 +619,17 @@ function do_featureCustomer() {
     
     console.log("Server: tempFeatureCustomer is done! ");
 }
+//added by zhaohsun
+//read latency data file
+Meteor.methods({
+    loadFile:function(path){
+        console.log("server get path:"+path);
 
+        var fs = Npm.require('fs')
+        return fs.readFileSync(path, 'utf8');
+
+    }
+})
 Meteor.startup(function () {
     console.log("Server: Start to calculate the data in Server!");
     // because we have ever run below code and update DB. So do not need run again.
@@ -634,6 +644,7 @@ Meteor.startup(function () {
     do_customerSummary();
     do_customerFeature(); // change the data structure to fix slow issue.
     do_customerChassis();*/
+
 
     console.log("Server: finish to calculate the data in Server!");
 });
